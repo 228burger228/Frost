@@ -1907,3 +1907,113 @@
     align-items: stretch;
   }
 }
+
+
+/* ==========================================================================
+   MICRO-INTERACTIONS, TOAST & POLISH ANIMATIONS
+   ========================================================================== */
+
+/* Active feedback on clickable controls */
+.btn:active,
+.tab-btn:active,
+.pdp-tab-trigger:active,
+.btn-card-action:active {
+  transform: scale(0.97);
+}
+
+/* Card hover glow & elevation */
+.product-card {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 32px rgba(36, 54, 45, 0.1);
+  border-color: #bcc5b8;
+}
+
+.product-card-img {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-card:hover .product-card-img {
+  transform: scale(1.06);
+}
+
+/* Timeline progress shimmer animation */
+.timeline-fill {
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  animation: shimmer 2.4s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  60% { left: 150%; }
+  100% { left: 150%; }
+}
+
+/* Floating Toast Notification */
+.toast-notification {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--forest);
+  color: var(--text-on-dark);
+  padding: 12px 24px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  z-index: 2500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid var(--accent);
+  animation: toastPop 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+
+.toast-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+@keyframes toastPop {
+  from {
+    transform: translate(-50%, 20px) scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Secondary Action Active States in PDP */
+.pdp-text-btn.active {
+  color: #15803d;
+}
+
+.pdp-text-btn.active svg {
+  stroke: #15803d;
+}

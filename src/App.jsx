@@ -20,19 +20,49 @@ export default function App() {
   const [selectedProductId, setSelectedProductId] = useState('blast-freezer-12');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
+  const [toastMessage, setToastMessage] = useState('');
 
-  // Scroll to top when page changes
+  const selectedProduct = products.find(p => p.id === selectedProductId) || products[0];
+
+  // Dynamic SEO Title & Meta Management
   useEffect(() => {
+    if (currentPage === 'product') {
+      document.title = `${selectedProduct.name} — цена ${selectedProduct.priceRub ? selectedProduct.priceRub.toLocaleString('ru-RU') + ' ₽' : ''} | Алекспром СПб`;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', `${selectedProduct.name} для профессиональных кухонь: ${selectedProduct.dimensions}, ${selectedProduct.tempRange}. Официальная гарантия 1 год, склад в Санкт-Петербурге.`);
+      }
+    } else {
+      document.title = 'Алекспром — Профессиональное холодильное оборудование | Санкт-Петербург';
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', 'Официальный каталог профессионального холодильного оборудования «Алекспром»: шкафы шоковой заморозки, салат-бары, витрины. Склад и демо-зал в Санкт-Петербурге.');
+      }
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage]);
+  }, [currentPage, selectedProduct]);
+
+  // Toast notification helper
+  const showToast = (message) => {
+    setToastMessage(message);
+    setTimeout(() => {
+      setToastMessage('');
+    }, 2800);
+  };
 
   const handleSelectProduct = (id) => {
     setSelectedProductId(id);
     setCurrentPage('product');
   };
 
-  const handleBackToHome = () => {
+  const handleBackToHome = (target = 'top') => {
     setCurrentPage('home');
+    if (target === 'catalog') {
+      setTimeout(() => {
+        const el = document.getElementById('catalog');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 150);
+    }
   };
 
   const handleOpenQuote = (title = '') => {
@@ -46,11 +76,9 @@ export default function App() {
       setTimeout(() => {
         const el = document.getElementById(anchor);
         if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
+      }, 150);
     }
   };
-
-  const selectedProduct = products.find(p => p.id === selectedProductId) || products[0];
 
   return (
     <div className="site-wrapper">
@@ -71,6 +99,7 @@ export default function App() {
             <Catalog
               onSelectProduct={handleSelectProduct}
               onOpenQuote={handleOpenQuote}
+              onToast={showToast}
             />
             <PerformanceSection
               onSelectProduct={handleSelectProduct}
@@ -85,6 +114,7 @@ export default function App() {
             product={selectedProduct}
             onBack={handleBackToHome}
             onOpenQuote={handleOpenQuote}
+            onToast={showToast}
           />
         )}
       </main>
@@ -99,6 +129,14 @@ export default function App() {
         onClose={() => setModalOpen(false)}
         productTitle={modalTitle}
       />
+
+      {/* Floating Toast Notification */}
+      {toastMessage && (
+        <div className="toast-notification" role="status" aria-live="polite">
+          <span className="toast-icon">✓</span>
+          <span>{toastMessage}</span>
+        </div>
+      )}
     </div>
   );
 }

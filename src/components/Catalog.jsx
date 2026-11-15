@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { products, categories } from '../data/products';
 import ProductCard from './ProductCard';
 
-export default function Catalog({ onSelectProduct, onOpenQuote }) {
+export default function Catalog({ onSelectProduct, onOpenQuote, onToast }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [sortOrder, setSortOrder] = useState('default');
 
@@ -21,13 +21,13 @@ export default function Catalog({ onSelectProduct, onOpenQuote }) {
   }, [activeCategory, sortOrder]);
 
   return (
-    <section id="catalog" className="catalog-section">
+    <section id="catalog" className="catalog-section" aria-labelledby="catalog-heading">
       <div className="container">
         {/* Header of catalog */}
         <div className="catalog-header">
           <div className="catalog-header-left">
             <span className="section-eyebrow font-mono">КАТАЛОГ ОБОРУДОВАНИЯ</span>
-            <h2 className="section-title">Платите за нужную производительность</h2>
+            <h2 id="catalog-heading" className="section-title">Платите за нужную производительность</h2>
           </div>
 
           <div className="catalog-header-right">
@@ -37,7 +37,7 @@ export default function Catalog({ onSelectProduct, onOpenQuote }) {
 
         {/* Controls: Tabs & Sort */}
         <div className="catalog-controls">
-          <div className="category-tabs" role="tablist">
+          <div className="category-tabs" role="tablist" aria-label="Категории оборудования">
             {categories.map((cat) => (
               <button
                 key={cat.id}
@@ -76,6 +76,7 @@ export default function Catalog({ onSelectProduct, onOpenQuote }) {
               product={product}
               onSelectProduct={onSelectProduct}
               onOpenQuote={onOpenQuote}
+              onToast={onToast}
             />
           ))}
         </div>

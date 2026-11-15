@@ -1,18 +1,37 @@
 import React, { useState } from 'react';
 import { formatPrice } from '../data/products';
 
-export default function ProductDetailPage({ product, onBack, onOpenQuote }) {
+export default function ProductDetailPage({ product, onBack, onOpenQuote, onToast }) {
   const [activeTab, setActiveTab] = useState('specs'); // specs | delivery
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isCompared, setIsCompared] = useState(false);
+
+  const handleFavoriteClick = () => {
+    const nextState = !isFavorite;
+    setIsFavorite(nextState);
+    if (onToast) {
+      onToast(nextState ? `«${product.name}» добавлен в избранное` : `«${product.name}» удалён из избранного`);
+    }
+  };
+
+  const handleCompareClick = () => {
+    const nextState = !isCompared;
+    setIsCompared(nextState);
+    if (onToast) {
+      onToast(nextState ? `«${product.name}» добавлен к сравнению` : `«${product.name}» удалён из сравнения`);
+    }
+  };
+
+  const isShockFreezer = product.category === 'blast-freezers';
 
   return (
     <div className="product-page">
       {/* Breadcrumbs */}
       <div className="container">
         <nav className="breadcrumbs font-mono" aria-label="Хлебные крошки">
-          <button type="button" className="breadcrumb-btn" onClick={onBack}>Главная</button>
+          <button type="button" className="breadcrumb-btn" onClick={() => onBack('top')}>Главная</button>
           <span className="breadcrumb-sep">/</span>
-          <button type="button" className="breadcrumb-btn" onClick={onBack}>Каталог</button>
+          <button type="button" className="breadcrumb-btn" onClick={() => onBack('catalog')}>Каталог</button>
           <span className="breadcrumb-sep">/</span>
           <span className="breadcrumb-current">{product.name}</span>
         </nav>
@@ -24,7 +43,9 @@ export default function ProductDetailPage({ product, onBack, onOpenQuote }) {
           {/* Gallery Column */}
           <div className="pdp-gallery">
             <div className="pdp-main-image-wrap">
-              <span className="pdp-image-badge font-mono">12 УРОВНЕЙ</span>
+              {product.badge && (
+                <span className="pdp-image-badge font-mono">{product.badge}</span>
+              )}
               <img 
                 src={product.detailImage || product.image} 
                 alt={product.name} 
@@ -34,7 +55,7 @@ export default function ProductDetailPage({ product, onBack, onOpenQuote }) {
             
             <div className="pdp-thumbs-row">
               <div className="pdp-thumb-item active">
-                <img src={product.image} alt="Миниатюра 1" />
+                <img src={product.image} alt="Миниатюра товара" />
               </div>
               <span className="thumb-note font-mono">Фото образца в демо-зале СПб</span>
             </div>
@@ -43,22 +64,26 @@ export default function ProductDetailPage({ product, onBack, onOpenQuote }) {
           {/* Details Column */}
           <div className="pdp-summary">
             <div className="pdp-category-tag font-mono">
-              БЫСТРЫЙ ХОЛОД · ШОКОВАЯ ЗАМОРОЗКА
+              {product.category === 'blast-freezers' 
+                ? 'БЫСТРЫЙ ХОЛОД · ШОКОВАЯ ЗАМОРОЗКА' 
+                : product.category === 'salad-bars' 
+                ? 'РАБОЧИЕ СТОЛЫ · САЛАТ-БАРЫ' 
+                : 'ДЕМОНСТРАЦИОННЫЙ ХОЛОД · ВИТРИНЫ'}
             </div>
 
-            <h1 className="pdp-title">{product.shortName || product.name}</h1>
-            <p className="pdp-subtitle font-mono">{product.levels} · гарантия 1 год</p>
+            <h1 className="pdp-title">{product.name}</h1>
+            <p className="pdp-subtitle font-mono">{product.levels || product.dimensions} · официальная гарантия</p>
 
             {/* 4 Key Metric Tiles */}
             <div className="pdp-metrics-grid">
               <div className="pdp-metric-tile">
-                <span className="tile-val font-mono">−35 °C</span>
-                <span className="tile-label">температура в камере</span>
+                <span className="tile-val font-mono">{product.tempRange}</span>
+                <span className="tile-label">температурный режим</span>
               </div>
 
               <div className="pdp-metric-tile">
-                <span className="tile-val font-mono">24 кг / 75 мин</span>
-                <span className="tile-label">аккумуляция +20 → −18 °C</span>
+                <span className="tile-val font-mono">{product.cycleFreeze || product.levels || 'В наличии'}</span>
+                <span className="tile-label">{isShockFreezer ? 'аккумуляция +20 → −18 °C' : 'вместимость / ярусы'}</span>
               </div>
 
               <div className="pdp-metric-tile">
@@ -67,15 +92,15 @@ export default function ProductDetailPage({ product, onBack, onOpenQuote }) {
               </div>
 
               <div className="pdp-metric-tile">
-                <span className="tile-val font-mono">1 год</span>
-                <span className="tile-label">гарантия производителя</span>
+                <span className="tile-val font-mono">{product.warranty || '1 год'}</span>
+                <span className="tile-label">заводская гарантия</span>
               </div>
             </div>
 
             {/* Price Box */}
             <div className="pdp-price-box">
               <div className="pdp-price font-mono">{formatPrice(product.priceRub)}</div>
-              <div className="pdp-price-sub">Комплектация и доставка — в расчёте до заказа</div>
+              <div className="pdp-price-sub">Комплектация и доставка — в расчёте до подтверждения заказа</div>
             </div>
 
             {/* Primary Action Button */}
@@ -93,19 +118,25 @@ export default function ProductDetailPage({ product, onBack, onOpenQuote }) {
               </button>
 
               <div className="pdp-secondary-actions">
-                <button type="button" className="pdp-text-btn">
+                <button 
+                  type="button" 
+                  className={`pdp-text-btn ${isCompared ? 'active' : ''}`}
+                  onClick={handleCompareClick}
+                  aria-pressed={isCompared}
+                >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <line x1="18" y1="20" x2="18" y2="10" />
                     <line x1="12" y1="20" x2="12" y2="4" />
                     <line x1="6" y1="20" x2="6" y2="14" />
                   </svg>
-                  <span>Сравнить</span>
+                  <span>{isCompared ? 'В сравнении' : 'Сравнить'}</span>
                 </button>
 
                 <button 
                   type="button" 
-                  className="pdp-text-btn"
-                  onClick={() => setIsFavorite(!isFavorite)}
+                  className={`pdp-text-btn ${isFavorite ? 'active' : ''}`}
+                  onClick={handleFavoriteClick}
+                  aria-pressed={isFavorite}
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill={isFavorite ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
@@ -119,11 +150,11 @@ export default function ProductDetailPage({ product, onBack, onOpenQuote }) {
             <div className="pdp-checkpoints">
               <div className="chk-item">
                 <span className="chk-icon">✓</span>
-                <span>Можно посмотреть в Санкт-Петербурге (демо-зал)</span>
+                <span>Осмотр и проверка в Санкт-Петербурге (склад / демо-зал)</span>
               </div>
               <div className="chk-item">
                 <span className="chk-icon">✓</span>
-                <span>Отправка по всей России в жесткой обрешетке</span>
+                <span>Отгрузка день в день по всей России в жесткой транспортной таре</span>
               </div>
             </div>
           </div>
@@ -178,23 +209,47 @@ export default function ProductDetailPage({ product, onBack, onOpenQuote }) {
 
                 {/* Right Dark Widget */}
                 <div className="pdp-dark-widget">
-                  <h3 className="widget-title">Планируйте загрузку на смену</h3>
+                  <h3 className="widget-title">
+                    {isShockFreezer ? 'Планируйте загрузку на смену' : 'Режим непрерывной работы'}
+                  </h3>
 
-                  <div className="widget-cycle">
-                    <span className="cycle-type font-mono">ЗАМОРОЗКА</span>
-                    <div className="cycle-temp font-mono">+20 → −18 °C</div>
-                    <div className="cycle-time font-mono">24 кг за 75 минут</div>
-                  </div>
+                  {isShockFreezer ? (
+                    <>
+                      <div className="widget-cycle">
+                        <span className="cycle-type font-mono">ЗАМОРОЗКА</span>
+                        <div className="cycle-temp font-mono">+20 → −18 °C</div>
+                        <div className="cycle-time font-mono">{product.cycleFreeze || '24 кг за 75 минут'}</div>
+                      </div>
 
-                  <div className="widget-cycle" style={{ marginTop: '20px' }}>
-                    <span className="cycle-type font-mono">ОХЛАЖДЕНИЕ</span>
-                    <div className="cycle-temp font-mono">+90 → +3 °C</div>
-                    <div className="cycle-time font-mono">55 минут</div>
-                  </div>
+                      <div className="widget-cycle" style={{ marginTop: '20px' }}>
+                        <span className="cycle-type font-mono">ОХЛАЖДЕНИЕ</span>
+                        <div className="cycle-temp font-mono">+90 → +3 °C</div>
+                        <div className="cycle-time font-mono">{product.cycleCool || '55 минут'}</div>
+                      </div>
 
-                  <p className="widget-note">
-                    Автоматическая оттайка горячим газом за 10 минут между циклами.
-                  </p>
+                      <p className="widget-note">
+                        Автоматическая оттайка горячим газом за 10 минут между рабочими циклами.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <div className="widget-cycle">
+                        <span className="cycle-type font-mono">УДЕРЖАНИЕ ТЕМПЕРАТУРЫ</span>
+                        <div className="cycle-temp font-mono">{product.tempRange}</div>
+                        <div className="cycle-time font-mono">Равномерный статический / вентилируемый обдув</div>
+                      </div>
+
+                      <div className="widget-cycle" style={{ marginTop: '20px' }}>
+                        <span className="cycle-type font-mono">ЭНЕРГОПОТРЕБЛЕНИЕ</span>
+                        <div className="cycle-temp font-mono">{product.power}</div>
+                        <div className="cycle-time font-mono">Экономичный режим при постоянной загрузке</div>
+                      </div>
+
+                      <p className="widget-note">
+                        Цельнозаливной корпус из пенополиуретана снижает потери холода.
+                      </p>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -203,16 +258,16 @@ export default function ProductDetailPage({ product, onBack, onOpenQuote }) {
               <h2 className="specs-section-title">Условия доставки и сервисный регламент</h2>
               <div className="delivery-info-grid">
                 <div className="delivery-card">
-                  <h4>Доставка по РФ</h4>
+                  <h4>Доставка по всей РФ</h4>
                   <p>Отправляем через проверенные ТК («Деловые Линии», «ПЭК», «Байкал Сервис») с обязательным страхованием и жесткой деревянной обрешеткой.</p>
                 </div>
                 <div className="delivery-card">
-                  <h4>Самовывоз в СПб</h4>
-                  <p>Возможен самовывоз со склада: Санкт-Петербург. Поможем с погрузкой на ваш грузовой транспорт.</p>
+                  <h4>Самовывоз со склада в СПб</h4>
+                  <p>Возможен самовывоз со склада в Санкт-Петербурге. Поможем с погрузкой на ваш грузовой транспорт или фургон.</p>
                 </div>
                 <div className="delivery-card">
                   <h4>Сервис и запчасти</h4>
-                  <p>В наличии компрессоры, вентиляторы, уплотнители и платы управления. Официальный сервисный инженер на связи.</p>
+                  <p>В наличии компрессоры, вентиляторы, термодатчики, уплотнители и платы управления. Собственный сервисный инженер на связи.</p>
                 </div>
               </div>
             </div>
@@ -229,7 +284,7 @@ export default function ProductDetailPage({ product, onBack, onOpenQuote }) {
             <div className="pdp-trust-card">
               <span className="trust-eyebrow font-mono">ДОСТАВКА</span>
               <h3 className="trust-card-title">Доставка с расчётом</h3>
-              <p>Уточним стоимость и сроки доставки до вашего объекта. Согласуем отправку до подтверждения заказа.</p>
+              <p>Уточним стоимость и сроки доставки до вашего адреса. Согласуем отправку до подтверждения заказа.</p>
             </div>
 
             <div className="pdp-trust-card">
