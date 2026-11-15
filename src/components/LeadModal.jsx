@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { submitLead } from '../services/leadService';
 
 export default function LeadModal({ isOpen, onClose, productTitle = '' }) {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ export default function LeadModal({ isOpen, onClose, productTitle = '' }) {
   });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle');
+  const [leadResult, setLeadResult] = useState(null);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -39,7 +41,7 @@ export default function LeadModal({ isOpen, onClose, productTitle = '' }) {
     if (errors.phone) setErrors(prev => ({ ...prev, phone: null }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
@@ -64,9 +66,19 @@ export default function LeadModal({ isOpen, onClose, productTitle = '' }) {
     setErrors({});
     setStatus('submitting');
 
-    setTimeout(() => {
+    try {
+      const result = await submitLead({
+        name: formData.name,
+        phone: formData.phone,
+        comment: formData.comment,
+        productTitle: productTitle || 'Запрос с сайта'
+      });
+      setLeadResult(result);
       setStatus('success');
-    }, 700);
+    } catch (err) {
+      console.error('Modal lead submit error:', err);
+      setStatus('error');
+    }
   };
 
   return (
@@ -90,12 +102,29 @@ export default function LeadModal({ isOpen, onClose, productTitle = '' }) {
             </div>
             <h3 className="modal-title">Заявка принята</h3>
             <p className="modal-desc">
-              Инженер проверит наличие и свяжется с вами в рабочее время для согласования спецификации и доставки.
+              Инженер свяжется с вами по номеру <strong className="font-mono">{formData.phone}</strong> для расчета стоимости и согласования доставки.
             </p>
+
+            {leadResult?.whatsappUrl && (
+              <a
+                href={leadResult.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
+                style={{ width: '100%', marginTop: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+              >
+                <span>Написать сразу в WhatsApp</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            )}
+
             <button
               type="button"
-              className="btn btn-primary"
-              style={{ width: '100%', marginTop: '20px' }}
+              className="btn btn-secondary"
+              style={{ width: '100%', marginTop: '10px' }}
               onClick={onClose}
             >
               Закрыть окно
@@ -105,7 +134,7 @@ export default function LeadModal({ isOpen, onClose, productTitle = '' }) {
           <div>
             <span className="modal-eyebrow font-mono">РАСЧЁТ СТОИМОСТИ И ДОСТАВКИ</span>
             <h3 className="modal-title">
-              {productTitle ? `Запрос: ${productTitle}` : 'Запрос расчёта оборудования'}
+              {productTitle ? productTitle : 'Запрос расчёта оборудования'}
             </h3>
             <p className="modal-desc">
               Оставьте контакты — инженер уточнит параметры вашей сети (220/380 В), габариты проёмов и рассчитает доставку до вашего адреса.

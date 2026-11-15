@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { categories } from '../data/products';
+import { submitLead } from '../services/leadService';
 
 export default function LeadForm({ defaultProduct = '' }) {
   const [formData, setFormData] = useState({
@@ -11,6 +11,7 @@ export default function LeadForm({ defaultProduct = '' }) {
 
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle | submitting | success | error
+  const [leadResult, setLeadResult] = useState(null);
 
   // Format phone number with +7 mask
   const handlePhoneChange = (e) => {
@@ -30,7 +31,7 @@ export default function LeadForm({ defaultProduct = '' }) {
     if (errors.phone) setErrors(prev => ({ ...prev, phone: null }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
@@ -55,10 +56,18 @@ export default function LeadForm({ defaultProduct = '' }) {
     setErrors({});
     setStatus('submitting');
 
-    // Simulate sending lead to API / backend
-    setTimeout(() => {
+    try {
+      const result = await submitLead({
+        name: formData.name,
+        phone: formData.phone,
+        equipment: formData.equipment
+      });
+      setLeadResult(result);
       setStatus('success');
-    }, 800);
+    } catch (err) {
+      console.error('Lead submission failed:', err);
+      setStatus('error');
+    }
   };
 
   return (
@@ -93,14 +102,33 @@ export default function LeadForm({ defaultProduct = '' }) {
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
               </div>
-              <h4 className="success-title">Заявка принята</h4>
+              <h4 className="success-title">Заявка успешно принята</h4>
               <p className="success-desc">
-                Инженер проверит наличие и свяжется с вами в рабочее время для согласования спецификации.
+                Инженер проверит наличие и свяжется с вами по номеру <strong className="font-mono">{formData.phone}</strong> для согласования спецификации.
               </p>
+
+              {leadResult?.whatsappUrl && (
+                <div style={{ marginTop: '20px', width: '100%' }}>
+                  <a
+                    href={leadResult.whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-primary"
+                    style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                  >
+                    <span>Открыть диалог в WhatsApp</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                      <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                  </a>
+                </div>
+              )}
+
               <button
                 type="button"
                 className="btn btn-secondary"
-                style={{ marginTop: '16px', width: '100%' }}
+                style={{ marginTop: '12px', width: '100%' }}
                 onClick={() => {
                   setStatus('idle');
                   setFormData({ name: '', phone: '', equipment: 'blast-freezers', consent: false });
@@ -156,10 +184,10 @@ export default function LeadForm({ defaultProduct = '' }) {
                   onChange={(e) => setFormData(prev => ({ ...prev, equipment: e.target.value }))}
                   disabled={status === 'submitting'}
                 >
-                  <option value="blast-freezers">Шкафы шоковой заморозки (10 / 12 уровней)</option>
-                  <option value="salad-bars">Салат-бары охлаждаемые</option>
-                  <option value="display-cases">Холодильные витрины</option>
-                  <option value="custom">Индивидуальный размер / под заказ</option>
+                  <option value="Шкафы шоковой заморозки (10 / 12 уровней)">Шкафы шоковой заморозки (10 / 12 уровней)</option>
+                  <option value="Салат-бары охлаждаемые">Салат-бары охлаждаемые</option>
+                  <option value="Холодильные витрины">Холодильные витрины</option>
+                  <option value="Индивидуальный размер / под заказ">Индивидуальный размер / под заказ</option>
                 </select>
               </div>
 
