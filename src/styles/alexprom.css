@@ -2301,43 +2301,45 @@
 
 /* Footer additions */
 .footer-phone {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
-  color: var(--ink);
+  color: var(--text-on-dark);
   text-decoration: none;
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease;
 }
 
 .footer-phone:hover {
-  color: var(--forest);
+  color: var(--accent);
 }
 
 .footer-messengers-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 10px 0 12px;
+  margin: 12px 0 14px;
   flex-wrap: wrap;
 }
 
 .footer-messenger-badge {
   display: inline-block;
-  padding: 4px 10px;
-  font-size: 11px;
+  padding: 5px 12px;
+  font-size: 12px;
   font-weight: 600;
   border-radius: var(--radius-pill);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  color: var(--ink);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--text-on-dark);
   text-decoration: none;
   transition: all 0.18s ease;
 }
 
 .footer-messenger-badge:hover {
-  background: var(--forest);
-  color: var(--text-on-dark);
-  border-color: var(--forest);
+  background: var(--accent);
+  color: var(--ink);
+  border-color: var(--accent);
 }
 
 @media (max-width: 768px) {
