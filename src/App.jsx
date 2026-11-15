@@ -40,8 +40,37 @@ export default function App() {
         metaDesc.setAttribute('content', 'Официальный каталог профессионального холодильного оборудования «Алекспром»: шкафы шоковой заморозки, салат-бары, витрины. Склад и демо-зал в Санкт-Петербурге.');
       }
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage, selectedProduct]);
+
+  // Sync state with URL Hash for history/back button & shareable links
+  useEffect(() => {
+    const parseHash = () => {
+      const hash = window.location.hash.replace(/^#/, '');
+      if (hash.startsWith('product/')) {
+        const prodId = hash.replace('product/', '');
+        const exists = products.some(p => p.id === prodId);
+        if (exists) {
+          setSelectedProductId(prodId);
+          setCurrentPage('product');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
+      }
+      if (hash && hash !== 'home') {
+        setCurrentPage('home');
+        setTimeout(() => {
+          const el = document.getElementById(hash);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+      } else {
+        setCurrentPage('home');
+      }
+    };
+
+    parseHash();
+    window.addEventListener('hashchange', parseHash);
+    return () => window.removeEventListener('hashchange', parseHash);
+  }, []);
 
   // Toast notification helper
   const showToast = (message) => {
@@ -54,15 +83,25 @@ export default function App() {
   const handleSelectProduct = (id) => {
     setSelectedProductId(id);
     setCurrentPage('product');
+    window.location.hash = `product/${id}`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBackToHome = (target = 'top') => {
     setCurrentPage('home');
     if (target === 'catalog') {
+      window.location.hash = 'catalog';
       setTimeout(() => {
         const el = document.getElementById('catalog');
         if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 150);
+      }, 100);
+    } else {
+      if (window.history && window.history.pushState) {
+        window.history.pushState(null, '', window.location.pathname);
+      } else {
+        window.location.hash = '';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -73,11 +112,21 @@ export default function App() {
 
   const handleNavigate = (page, anchor) => {
     setCurrentPage(page);
-    if (anchor) {
-      setTimeout(() => {
-        const el = document.getElementById(anchor);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 150);
+    if (page === 'home') {
+      if (anchor) {
+        window.location.hash = anchor;
+        setTimeout(() => {
+          const el = document.getElementById(anchor);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else {
+        if (window.history && window.history.pushState) {
+          window.history.pushState(null, '', window.location.pathname);
+        } else {
+          window.location.hash = '';
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   };
 

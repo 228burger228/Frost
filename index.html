@@ -10,17 +10,13 @@
     <meta name="theme-color" content="#243C31" />
 
     <script>
-      // Automatic fallback for GitHub Pages root deployment:
-      // Only redirect if running uncompiled source index.html (has src/main.jsx)
-      // and not already in /docs/
+      // Ensure trailing slash on directory paths to avoid broken relative asset paths
       if (
         window.location.hostname.includes('github.io') &&
-        !window.location.pathname.includes('/docs/') &&
-        document.querySelector &&
-        document.querySelector('script[src*="src/main.jsx"]')
+        !window.location.pathname.endsWith('/') &&
+        !window.location.pathname.endsWith('.html')
       ) {
-        var base = window.location.pathname.replace(/\/$/, '');
-        window.location.replace(base + '/docs/');
+        window.location.replace(window.location.pathname + '/' + window.location.search + window.location.hash);
       }
     </script>
     
@@ -89,5 +85,17 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Fallback for GitHub Pages root deployment:
+      // If running uncompiled source index.html (has main.jsx) on github.io outside of /docs/,
+      // redirect immediately to /docs/ where the compiled production bundle resides.
+      (function() {
+        var isSourceHtml = !!document.querySelector('script[src*="main.jsx"]');
+        if (isSourceHtml && window.location.hostname.includes('github.io') && !window.location.pathname.includes('/docs/')) {
+          var base = window.location.pathname.replace(/\/$/, '');
+          window.location.replace(base + '/docs/' + window.location.search + window.location.hash);
+        }
+      })();
+    </script>
   </body>
 </html>

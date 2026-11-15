@@ -24,22 +24,21 @@ export default function Header({ onOpenQuote, activePage, onNavigate }) {
             return;
           }
 
-          if (scrollY < 200) {
+          if (scrollY < 120) {
             setActiveSection('');
             ticking = false;
             return;
           }
 
           const sections = ['catalog', 'performance', 'benefits', 'steps', 'faq'];
-          const scrollPosition = scrollY + 180;
-
           let current = '';
+          const triggerPoint = 160;
+
           for (const sectionId of sections) {
             const el = document.getElementById(sectionId);
             if (el) {
-              const top = el.offsetTop;
-              const height = el.offsetHeight;
-              if (scrollPosition >= top && scrollPosition < top + height) {
+              const rect = el.getBoundingClientRect();
+              if (rect.top <= triggerPoint && rect.bottom > triggerPoint) {
                 current = sectionId;
                 break;
               }
@@ -69,6 +68,9 @@ export default function Header({ onOpenQuote, activePage, onNavigate }) {
     if (activePage !== 'home') {
       onNavigate('home', anchor);
     } else {
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', `#${anchor}`);
+      }
       const el = document.getElementById(anchor);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
