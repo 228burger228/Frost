@@ -11,6 +11,28 @@
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
   padding: 16px 0;
+  position: sticky;
+}
+
+/* Scroll Progress Line in Header */
+.header-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2.5px;
+  background: transparent;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.header-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--forest) 0%, #2e7a5c 60%, var(--ink) 100%);
+  width: 0%;
+  transition: width 0.08s linear;
+  box-shadow: 0 0 6px rgba(46, 122, 92, 0.4);
 }
 
 .header-inner {
@@ -78,6 +100,45 @@
 
 .nav-link:hover::after {
   width: 100%;
+}
+
+.nav-link.active {
+  color: var(--forest);
+  font-weight: 700;
+}
+
+.nav-link.active::after {
+  width: 100%;
+  background: var(--forest);
+  height: 2.5px;
+}
+
+.header-breadcrumbs-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--forest);
+  font-weight: 600;
+  padding: 4px 10px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  transition: all 0.2s ease;
+}
+
+.header-back-link:hover {
+  background: var(--line);
+  color: var(--ink);
+}
+
+.header-pdp-hint {
+  font-size: 12px;
+  color: var(--muted);
 }
 
 .header-right {
@@ -149,6 +210,14 @@
   color: var(--ink);
   padding: 12px 0;
   border-bottom: 1px solid var(--line);
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-link.active {
+  color: var(--forest);
+  border-left: 3px solid var(--forest);
+  padding-left: 12px;
+  background: rgba(36, 60, 49, 0.04);
 }
 
 /* ==========================================================================
@@ -2016,4 +2085,261 @@
 
 .pdp-text-btn.active svg {
   stroke: #15803d;
+}
+
+/* ==========================================================================
+   Quick Contact Floating Widget (Бизнес-Премиум)
+   ========================================================================== */
+.quick-contact-container {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.quick-contact-trigger {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--forest);
+  color: var(--text-on-dark);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 12px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(36, 54, 45, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.quick-contact-trigger:hover {
+  background: var(--forest-light);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(36, 54, 45, 0.35);
+}
+
+.quick-contact-trigger.active {
+  background: var(--ink);
+}
+
+.trigger-pulse {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0% {
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(52, 211, 153, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0);
+  }
+}
+
+.trigger-badge {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.quick-contact-popup {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  right: 0;
+  width: 320px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 16px 40px rgba(36, 54, 45, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: popup-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popup-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.quick-contact-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.popup-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.popup-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+.popup-close-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+.popup-close-btn:hover {
+  color: var(--ink);
+}
+
+.popup-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.quick-contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quick-link-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  text-decoration: none;
+  color: var(--ink);
+  transition: all 0.18s ease;
+}
+
+.quick-link-item:hover {
+  background: #ffffff;
+  border-color: var(--forest);
+  transform: translateX(2px);
+}
+
+.quick-link-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  color: var(--forest);
+  flex-shrink: 0;
+}
+
+.quick-link-whatsapp .quick-link-icon-wrap {
+  color: #128c7e;
+}
+
+.quick-link-telegram .quick-link-icon-wrap {
+  color: #0088cc;
+}
+
+.quick-link-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.quick-link-label {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.quick-link-sub {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Footer additions */
+.footer-phone {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.footer-phone:hover {
+  color: var(--forest);
+}
+
+.footer-messengers-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 12px;
+  flex-wrap: wrap;
+}
+
+.footer-messenger-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  text-decoration: none;
+  transition: all 0.18s ease;
+}
+
+.footer-messenger-badge:hover {
+  background: var(--forest);
+  color: var(--text-on-dark);
+  border-color: var(--forest);
+}
+
+@media (max-width: 768px) {
+  .quick-contact-container {
+    bottom: 20px;
+    right: 20px;
+  }
+  .quick-contact-popup {
+    width: 290px;
+  }
 }

@@ -43,7 +43,10 @@ export default function ProductCard({ product, onSelectProduct, onOpenQuote, onT
           src={product.image} 
           alt={product.name} 
           className="product-card-img"
+          width="340"
+          height="240"
           loading="lazy"
+          decoding="async"
         />
       </div>
 

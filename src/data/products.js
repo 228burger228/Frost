@@ -1,3 +1,5 @@
+import { getAssetUrl } from '../utils/assets';
+
 export const formatPrice = (value) => {
   if (value === null || value === undefined) return 'Цена по запросу';
   return new Intl.NumberFormat('ru-RU', {
@@ -24,8 +26,8 @@ export const products = [
     category: 'blast-freezers',
     priceRub: 465000,
     availability: 'in-stock',
-    image: '/assets/images/Шкаф шоковой_заморозки · 12 уровней.png',
-    detailImage: '/assets/images/Шкаф на прозрачном фоне.png',
+    image: getAssetUrl('assets/images/blast-freezer-12.png'),
+    detailImage: getAssetUrl('assets/images/blast-freezer-transparent.png'),
     dimensions: '780 × 850 × 1750 мм',
     power: '3600 Вт · 380 В, 3 фазы',
     weight: '195 кг',
@@ -58,8 +60,8 @@ export const products = [
     category: 'blast-freezers',
     priceRub: 290000,
     availability: 'in-stock',
-    image: '/assets/images/Шкаф шоковой_заморозки · 10 уровней.png',
-    detailImage: '/assets/images/Шкаф шоковой_заморозки · 10 уровней.png',
+    image: getAssetUrl('assets/images/blast-freezer-10.png'),
+    detailImage: getAssetUrl('assets/images/blast-freezer-10.png'),
     dimensions: '780 × 800 × 1450 мм',
     power: '2800 Вт · 220/380 В',
     weight: '160 кг',
@@ -90,8 +92,8 @@ export const products = [
     category: 'salad-bars',
     priceRub: 67000,
     availability: 'in-stock',
-    image: '/assets/images/Салат-бар_холодильный М3,5.png',
-    detailImage: '/assets/images/Салат-бар_холодильный М3,5.png',
+    image: getAssetUrl('assets/images/salad-bar-m35.png'),
+    detailImage: getAssetUrl('assets/images/salad-bar-m35.png'),
     dimensions: '1205 × 595 × 850 мм',
     power: '450 Вт · 220 В',
     weight: '75 кг',
@@ -115,8 +117,8 @@ export const products = [
     category: 'display-cases',
     priceRub: 87500,
     availability: 'in-stock',
-    image: '/assets/images/Холодильная_витрина.png',
-    detailImage: '/assets/images/vitrina_shkaf.png',
+    image: getAssetUrl('assets/images/display-case.png'),
+    detailImage: getAssetUrl('assets/images/vitrina-shkaf.png'),
     dimensions: '1200 × 700 × 1250 мм',
     power: '550 Вт · 220 В',
     weight: '90 кг',

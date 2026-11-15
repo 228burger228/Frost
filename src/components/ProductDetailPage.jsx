@@ -50,12 +50,24 @@ export default function ProductDetailPage({ product, onBack, onOpenQuote, onToas
                 src={product.detailImage || product.image} 
                 alt={product.name} 
                 className="pdp-main-img" 
+                width="500"
+                height="520"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
               />
             </div>
             
             <div className="pdp-thumbs-row">
               <div className="pdp-thumb-item active">
-                <img src={product.image} alt="Миниатюра товара" />
+                <img 
+                  src={product.image} 
+                  alt="Миниатюра товара" 
+                  width="64"
+                  height="64"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
               <span className="thumb-note font-mono">Фото образца в демо-зале СПб</span>
             </div>

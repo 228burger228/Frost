@@ -1,24 +1,25 @@
 import React from 'react';
+import { getAssetUrl } from '../utils/assets';
 
 export default function TrustBar() {
   const items = [
     {
-      icon: '/assets/icons/truck.svg',
+      icon: getAssetUrl('assets/icons/truck.svg'),
       title: 'Доставка по всей РФ',
       desc: 'Отгрузка в день оплаты'
     },
     {
-      icon: '/assets/icons/shield.svg',
+      icon: getAssetUrl('assets/icons/shield.svg'),
       title: '1 год гарантии',
       desc: 'Комплектующие в наличии'
     },
     {
-      icon: '/assets/icons/tool.svg',
+      icon: getAssetUrl('assets/icons/tool.svg'),
       title: 'Заводской запуск',
       desc: 'Проверка перед отгрузкой'
     },
     {
-      icon: '/assets/icons/pin.svg',
+      icon: getAssetUrl('assets/icons/pin.svg'),
       title: 'Осмотр в демо-зале',
       desc: 'Покажем работу оборудования'
     }
@@ -31,7 +32,15 @@ export default function TrustBar() {
           {items.map((item, idx) => (
             <div key={idx} className="trustbar-item">
               <div className="trustbar-icon-wrap">
-                <img src={item.icon} alt="" className="trustbar-icon" />
+                <img 
+                  src={item.icon} 
+                  alt="" 
+                  className="trustbar-icon"
+                  width="24"
+                  height="24"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
               <div className="trustbar-text">
                 <span className="trustbar-title">{item.title}</span>

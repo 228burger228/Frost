@@ -1,4 +1,5 @@
 import React from 'react';
+import { getAssetUrl } from '../utils/assets';
 
 export default function PerformanceSection({ onSelectProduct }) {
   return (
@@ -21,9 +22,13 @@ export default function PerformanceSection({ onSelectProduct }) {
           <div className="perf-media-card">
             <div className="perf-media-inner">
               <img 
-                src="/assets/images/Шкаф на прозрачном фоне.png" 
+                src={getAssetUrl('assets/images/blast-freezer-transparent.png')} 
                 alt="Шкаф шоковой заморозки в разрезе"
                 className="perf-img"
+                width={400}
+                height={440}
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <div className="perf-media-badge font-mono">

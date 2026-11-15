@@ -10,8 +10,15 @@
     <meta name="theme-color" content="#243C31" />
 
     <script>
-      // Automatic fallback for GitHub Pages root deployment
-      if (window.location.hostname.includes('github.io') && !window.location.pathname.includes('/docs/')) {
+      // Automatic fallback for GitHub Pages root deployment:
+      // Only redirect if running uncompiled source index.html (has src/main.jsx)
+      // and not already in /docs/
+      if (
+        window.location.hostname.includes('github.io') &&
+        !window.location.pathname.includes('/docs/') &&
+        document.querySelector &&
+        document.querySelector('script[src*="src/main.jsx"]')
+      ) {
         var base = window.location.pathname.replace(/\/$/, '');
         window.location.replace(base + '/docs/');
       }
@@ -25,13 +32,16 @@
     <meta property="og:title" content="Алекспром — Холод держит. Работа идёт." />
     <meta property="og:description" content="Шоковая заморозка, охлаждение и хранение для кухонь и производств с непрерывной загрузкой. В наличии со склада в СПб." />
     <meta property="og:url" content="https://228burger228.github.io/Frost/" />
-    <meta property="og:image" content="./assets/images/vitrina_shkaf.png" />
+    <meta property="og:image" content="https://228burger228.github.io/Frost/assets/images/vitrina-shkaf.png" />
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Алекспром — Холод держит. Работа идёт." />
     <meta name="twitter:description" content="Профессиональное холодильное оборудование в СПб: шокеры, салат-бары, витрины." />
-    <meta name="twitter:image" content="./assets/images/vitrina_shkaf.png" />
+    <meta name="twitter:image" content="https://228burger228.github.io/Frost/assets/images/vitrina-shkaf.png" />
+
+    <!-- Preload Hero LCP Candidate -->
+    <link rel="preload" as="image" href="./assets/images/blast-freezer-transparent.png" fetchpriority="high" />
 
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -75,8 +85,8 @@
       ]
     }
     </script>
-    <script type="module" crossorigin src="./assets/index-CgRucJvC.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-B6ZTFbpx.css">
+    <script type="module" crossorigin src="./assets/index-CFKesAmK.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-_a2-AiyH.css">
   </head>
   <body>
     <div id="root"></div>

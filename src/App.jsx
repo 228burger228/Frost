@@ -10,6 +10,7 @@ import FaqSection from './components/FaqSection';
 import LeadForm from './components/LeadForm';
 import ProductDetailPage from './components/ProductDetailPage';
 import LeadModal from './components/LeadModal';
+import QuickContactWidget from './components/QuickContactWidget';
 import Footer from './components/Footer';
 import { products } from './data/products';
 import './styles/tokens.css';
@@ -129,6 +130,9 @@ export default function App() {
         onClose={() => setModalOpen(false)}
         productTitle={modalTitle}
       />
+
+      {/* Floating Quick Contact Widget (WhatsApp / Telegram / Call) */}
+      <QuickContactWidget onOpenQuote={handleOpenQuote} />
 
       {/* Floating Toast Notification */}
       {toastMessage && (

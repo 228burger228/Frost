@@ -10,8 +10,15 @@
     <meta name="theme-color" content="#243C31" />
 
     <script>
-      // Automatic fallback for GitHub Pages root deployment
-      if (window.location.hostname.includes('github.io') && !window.location.pathname.includes('/docs/')) {
+      // Automatic fallback for GitHub Pages root deployment:
+      // Only redirect if running uncompiled source index.html (has src/main.jsx)
+      // and not already in /docs/
+      if (
+        window.location.hostname.includes('github.io') &&
+        !window.location.pathname.includes('/docs/') &&
+        document.querySelector &&
+        document.querySelector('script[src*="src/main.jsx"]')
+      ) {
         var base = window.location.pathname.replace(/\/$/, '');
         window.location.replace(base + '/docs/');
       }
@@ -25,19 +32,22 @@
     <meta property="og:title" content="Алекспром — Холод держит. Работа идёт." />
     <meta property="og:description" content="Шоковая заморозка, охлаждение и хранение для кухонь и производств с непрерывной загрузкой. В наличии со склада в СПб." />
     <meta property="og:url" content="https://228burger228.github.io/Frost/" />
-    <meta property="og:image" content="/assets/images/vitrina_shkaf.png" />
+    <meta property="og:image" content="https://228burger228.github.io/Frost/assets/images/vitrina-shkaf.png" />
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Алекспром — Холод держит. Работа идёт." />
     <meta name="twitter:description" content="Профессиональное холодильное оборудование в СПб: шокеры, салат-бары, витрины." />
-    <meta name="twitter:image" content="/assets/images/vitrina_shkaf.png" />
+    <meta name="twitter:image" content="https://228burger228.github.io/Frost/assets/images/vitrina-shkaf.png" />
+
+    <!-- Preload Hero LCP Candidate -->
+    <link rel="preload" as="image" href="./assets/images/blast-freezer-transparent.png" fetchpriority="high" />
 
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="icon" type="image/svg+xml" href="/assets/icons/shield.svg" />
+    <link rel="icon" type="image/svg+xml" href="./assets/icons/shield.svg" />
 
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">

@@ -1,8 +1,9 @@
 import React from 'react';
+import { getAssetUrl } from '../utils/assets';
 
 export default function Hero({ onSelectProduct, onOpenQuote }) {
   return (
-    <section className="hero-section">
+    <section id="hero" className="hero-section">
       <div className="container hero-grid">
         {/* Left Column: Offer */}
         <div className="hero-content">
@@ -56,9 +57,14 @@ export default function Hero({ onSelectProduct, onOpenQuote }) {
 
           <div className="showcase-media">
             <img 
-              src="/assets/images/Шкаф на прозрачном фоне.png" 
+              src={getAssetUrl('assets/images/blast-freezer-transparent.png')} 
               alt="Шкаф шоковой заморозки 12 уровней" 
               className="showcase-img"
+              width={420}
+              height={460}
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
             />
           </div>
 
