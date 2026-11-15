@@ -1,0 +1,163 @@
+:root {
+  --bg: #f5f6f1;
+  --ink: #24362d;
+  --forest: #243c31;
+  --forest-light: #2c493c;
+  --muted: #647067;
+  --accent: #ddf29b;
+  --accent-hover: #cde486;
+  --surface: #e8ece2;
+  --card: #ffffff;
+  --media: #eef0e9;
+  --line: #d9ded4;
+  --text-on-dark: #f5f6f1;
+  --muted-on-dark: #ccd8c8;
+  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --radius: 5px;
+  --radius-pill: 999px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --shadow-sm: 0 1px 3px rgba(36, 54, 45, 0.05);
+  --shadow-md: 0 8px 24px rgba(36, 54, 45, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.container {
+  width: min(1312px, calc(100% - 128px));
+  margin-inline: auto;
+}
+
+/* Typography Helpers */
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  text-align: center;
+  min-height: 52px;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: #ffffff;
+  border-color: var(--ink);
+}
+
+.btn-primary:hover {
+  background: #192720;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.btn-secondary:hover {
+  background: var(--surface);
+  border-color: var(--ink);
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+.btn-accent:hover {
+  background: var(--accent-hover);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1199px) {
+  .container {
+    width: calc(100% - 64px);
+  }
+}
+
+@media (max-width: 899px) {
+  .container {
+    width: calc(100% - 40px);
+  }
+}
+
+@media (max-width: 599px) {
+  .container {
+    width: calc(100% - 32px);
+  }
+  .btn {
+    width: 100%;
+    min-height: 48px;
+    font-size: 14px;
+    padding: 12px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
