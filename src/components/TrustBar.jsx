@@ -1,25 +1,28 @@
 import React from 'react';
-import { getAssetUrl } from '../utils/assets';
+import truckIcon from '../assets/icons/truck.svg';
+import shieldIcon from '../assets/icons/shield.svg';
+import toolIcon from '../assets/icons/tool.svg';
+import pinIcon from '../assets/icons/pin.svg';
 
 export default function TrustBar() {
   const items = [
     {
-      icon: getAssetUrl('assets/icons/truck.svg'),
+      icon: truckIcon,
       title: 'Доставка по всей РФ',
       desc: 'Отгрузка в день оплаты'
     },
     {
-      icon: getAssetUrl('assets/icons/shield.svg'),
+      icon: shieldIcon,
       title: '1 год гарантии',
       desc: 'Комплектующие в наличии'
     },
     {
-      icon: getAssetUrl('assets/icons/tool.svg'),
+      icon: toolIcon,
       title: 'Заводской запуск',
       desc: 'Проверка перед отгрузкой'
     },
     {
-      icon: getAssetUrl('assets/icons/pin.svg'),
+      icon: pinIcon,
       title: 'Осмотр в демо-зале',
       desc: 'Покажем работу оборудования'
     }
@@ -39,7 +42,6 @@ export default function TrustBar() {
                   width="24"
                   height="24"
                   loading="lazy"
-                  decoding="async"
                 />
               </div>
               <div className="trustbar-text">

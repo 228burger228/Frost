@@ -1,9 +1,9 @@
 import React from 'react';
-import { getAssetUrl } from '../utils/assets';
+import blastFreezerTransparentImg from '../assets/images/blast-freezer-transparent.png';
 
 export default function Hero({ onSelectProduct, onOpenQuote }) {
   return (
-    <section id="hero" className="hero-section">
+    <section className="hero-section">
       <div className="container hero-grid">
         {/* Left Column: Offer */}
         <div className="hero-content">
@@ -57,7 +57,7 @@ export default function Hero({ onSelectProduct, onOpenQuote }) {
 
           <div className="showcase-media">
             <img 
-              src={getAssetUrl('assets/images/blast-freezer-transparent.png')} 
+              src={blastFreezerTransparentImg} 
               alt="Шкаф шоковой заморозки 12 уровней" 
               className="showcase-img"
               width={420}

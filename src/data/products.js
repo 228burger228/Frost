@@ -1,4 +1,9 @@
-import { getAssetUrl } from '../utils/assets';
+import blastFreezer12Img from '../assets/images/blast-freezer-12.png';
+import blastFreezer10Img from '../assets/images/blast-freezer-10.png';
+import blastFreezerTransparentImg from '../assets/images/blast-freezer-transparent.png';
+import saladBarM35Img from '../assets/images/salad-bar-m35.png';
+import displayCaseImg from '../assets/images/display-case.png';
+import vitrinaShkafImg from '../assets/images/vitrina-shkaf.png';
 
 export const formatPrice = (value) => {
   if (value === null || value === undefined) return 'Цена по запросу';
@@ -26,8 +31,8 @@ export const products = [
     category: 'blast-freezers',
     priceRub: 465000,
     availability: 'in-stock',
-    image: getAssetUrl('assets/images/blast-freezer-12.png'),
-    detailImage: getAssetUrl('assets/images/blast-freezer-transparent.png'),
+    image: blastFreezer12Img,
+    detailImage: blastFreezerTransparentImg,
     dimensions: '780 × 850 × 1750 мм',
     power: '3600 Вт · 380 В, 3 фазы',
     weight: '195 кг',
@@ -60,8 +65,8 @@ export const products = [
     category: 'blast-freezers',
     priceRub: 290000,
     availability: 'in-stock',
-    image: getAssetUrl('assets/images/blast-freezer-10.png'),
-    detailImage: getAssetUrl('assets/images/blast-freezer-10.png'),
+    image: blastFreezer10Img,
+    detailImage: blastFreezer10Img,
     dimensions: '780 × 800 × 1450 мм',
     power: '2800 Вт · 220/380 В',
     weight: '160 кг',
@@ -92,8 +97,8 @@ export const products = [
     category: 'salad-bars',
     priceRub: 67000,
     availability: 'in-stock',
-    image: getAssetUrl('assets/images/salad-bar-m35.png'),
-    detailImage: getAssetUrl('assets/images/salad-bar-m35.png'),
+    image: saladBarM35Img,
+    detailImage: saladBarM35Img,
     dimensions: '1205 × 595 × 850 мм',
     power: '450 Вт · 220 В',
     weight: '75 кг',
@@ -117,8 +122,8 @@ export const products = [
     category: 'display-cases',
     priceRub: 87500,
     availability: 'in-stock',
-    image: getAssetUrl('assets/images/display-case.png'),
-    detailImage: getAssetUrl('assets/images/vitrina-shkaf.png'),
+    image: displayCaseImg,
+    detailImage: vitrinaShkafImg,
     dimensions: '1200 × 700 × 1250 мм',
     power: '550 Вт · 220 В',
     weight: '90 кг',

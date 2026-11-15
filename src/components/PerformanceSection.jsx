@@ -1,15 +1,15 @@
 import React from 'react';
-import { getAssetUrl } from '../utils/assets';
+import blastFreezerTransparentImg from '../assets/images/blast-freezer-transparent.png';
 
 export default function PerformanceSection({ onSelectProduct }) {
   return (
-    <section id="performance" className="performance-section">
+    <section id="performance" className="performance-section" aria-labelledby="performance-heading">
       <div className="container">
         {/* Header */}
         <div className="performance-header">
           <div className="performance-header-left">
             <span className="section-eyebrow eyebrow-light font-mono">ТЕХНОЛОГИЯ ШОКОВОЙ ЗАМОРОЗКИ</span>
-            <h2 className="section-title title-light">Меньше ожидания.<br />Больше рабочих циклов.</h2>
+            <h2 id="performance-heading" className="section-title title-light">Меньше ожидания.<br />Больше рабочих циклов.</h2>
           </div>
           <div className="performance-header-right">
             <p>Шоковое охлаждение останавливает размножение бактерий и сохраняет клеточную структуру продукта без потери массы.</p>
@@ -22,7 +22,7 @@ export default function PerformanceSection({ onSelectProduct }) {
           <div className="perf-media-card">
             <div className="perf-media-inner">
               <img 
-                src={getAssetUrl('assets/images/blast-freezer-transparent.png')} 
+                src={blastFreezerTransparentImg} 
                 alt="Шкаф шоковой заморозки в разрезе"
                 className="perf-img"
                 width={400}
